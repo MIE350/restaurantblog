@@ -10,7 +10,7 @@ public class Member {
 	private int memberid;
 	private String firstName;
 	private String lastName;
-	private String username;
+	private String username; //test comment
 	private String password;
 	private String email;
 	private boolean valid;

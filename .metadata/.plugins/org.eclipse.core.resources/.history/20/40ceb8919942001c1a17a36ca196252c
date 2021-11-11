@@ -1,0 +1,40 @@
+package com.mie.model;
+
+public class Reply {
+	
+	private int replyId;
+	private int reviewId;
+	private int userId;
+	private String replyContent;
+	
+	public void readData (int replyId, int reviewId,
+			int userId, String replyContent){
+		this.replyId = replyId;
+		this.reviewId = reviewId;
+		this.userId = userId;
+		this.replyContent = replyContent;
+	}
+	
+	//getters
+	public int getReplyId() {
+		return replyId;
+	}
+	
+	public int getReviewId(){
+		return reviewId;
+	}
+	
+	public int userId(){
+		return userId;
+	}
+	
+	public String getReplyContent(){
+		return replyContent;
+	}
+	
+	//setters
+	public void setReplyContent(String newReplyContent){
+		replyContent = newReplyContent;
+	}
+
+}

@@ -1,0 +1,12 @@
+package com.mie.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.mie.model.Reply;
+import com.mie.util.DbUtil;
+
+public class ReplyDao {
+
+}

@@ -2,10 +2,18 @@ package com.mie.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
 
 import com.mie.model.Review;
+import com.mie.model.Student;
 import com.mie.util.DbUtil;
+import com.mie.model.ReviewList;
+import com.mie.model.Reply;
 
 public class ReviewDao {
 	
@@ -38,5 +46,65 @@ public class ReviewDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public ReviewList getAllReviews() {
+		/**
+		 * This method returns the list of all students in the form of a List
+		 * object.
+		 */
+		ReviewList reviews = new ReviewList();
+		try {
+			Statement statement = connection.createStatement();
+			// System.out.println("getting reviews from table");
+			ResultSet rs = statement.executeQuery("select * from reviews");
+			while (rs.next()) {
+				Review review = new Review();
+				review.setUserId(rs.getInt("studentID"));
+				review.setRestaurantId(rs.getInt("restaurantID"));
+				review.setReviewId(rs.getInt("reviewID"));
+				review.setReviewContent(rs.getString("review"));
+				review.setRating(rs.getInt("rating"));
+				review.setPostTime(rs.getTimestamp("postTime"));
+				reviews.add(review);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reviews;
+	}
+	
+	public void sortAllReplies() {
+		/**
+		 * This method returns the list of all students in the form of a List
+		 * object.
+		 */
+		ReviewList reviews = getAllReviews();
+		
+		Iterator iterator = reviews.iterator();
+		
+		while (iterator.hasNext()){
+			Review review = (Review) iterator.next();
+			int reviewId = review.getReviewId();
+			
+			try {
+				Statement statement = connection.createStatement();
+				// System.out.println("getting reviews from table");
+				ResultSet rs = statement.executeQuery("select * from replies where reviewID ="+reviewId+" order by postTime ASC;");
+				while (rs.next()){
+					Reply reply = new Reply();
+					reply.setReplyId(rs.getInt("replyID"));
+					reply.setReviewId(rs.getInt("reviewID"));
+					reply.setUserId(rs.getInt("studentID"));
+					reply.setReplyContent(rs.getString("reply"));
+					reply.setPostTime(rs.getTimestamp("postTime"));
+					review.addReply(reply);
+				}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 }

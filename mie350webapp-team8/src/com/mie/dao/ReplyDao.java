@@ -2,10 +2,15 @@ package com.mie.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.mie.model.Reply;
+import com.mie.model.Review;
+import com.mie.model.ReviewList;
 import com.mie.util.DbUtil;
+import com.mie.model.ReplyList;
 
 public class ReplyDao {
 
@@ -28,5 +33,7 @@ public class ReplyDao {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 }

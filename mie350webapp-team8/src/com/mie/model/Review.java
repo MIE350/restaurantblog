@@ -66,6 +66,22 @@ public class Review {
 		rating = newRating;
 	}
 	
+	public void setUserId(int newUserId){
+		userId = newUserId;
+	}
+	
+	public void setRestaurantId(int newRestaurantId){
+		restaurantId = newRestaurantId;
+	}
+	
+	public void setReviewId(int newReviewId){
+		reviewId =newReviewId;
+	}
+	
+	public void setPostTime(Timestamp newPostTime){
+		postTime = newPostTime;
+	}
+	
 	//add new reply to review
 	public void addReply(Reply reply) {
 		replies.add(reply);

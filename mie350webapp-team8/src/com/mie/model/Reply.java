@@ -44,5 +44,21 @@ public class Reply {
 	public void setReplyContent(String newReplyContent){
 		replyContent = newReplyContent;
 	}
+	
+	public void setReplyId(int newReplyId){
+		replyId = newReplyId;
+	}
+	
+	public void setReviewId(int newReviewId){
+		reviewId = newReviewId;
+	}
+	
+	public void setUserId(int newUserId){
+		userId = newUserId;
+	}
+	
+	public void setPostTime(Timestamp newPostTime){
+		postTime = newPostTime;
+	}
 
 }

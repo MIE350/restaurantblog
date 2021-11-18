@@ -23,11 +23,6 @@ public class ReviewDao {
 		
 		ReviewList reviews = (ReviewList) getAllReviews();
 		Iterator iterator = reviews.iterator();
-		while (iterator.hasNext()){
-			Review review = (Review) iterator.next();
-			sortAllReplies1(review);
-			review.printContents();
-		}
 		
 	}
 	
@@ -117,32 +112,6 @@ public class ReviewDao {
 			}
 		}
 	}
-	
-	public void sortAllReplies1(Review review) {
-		/**
-		 * This method returns the list of all students in the form of a List
-		 * object.
-		 */
-
-			int reviewId = review.getReviewId();
-			
-			try {
-				Statement statement = connection.createStatement();
-				// System.out.println("getting reviews from table");
-				ResultSet rs = statement.executeQuery("select * from replies where reviewID ="+reviewId+" order by postTime ASC;");
-				while (rs.next()){
-					Reply reply = new Reply();
-					reply.setReplyId(rs.getInt("replyID"));
-					reply.setReviewId(rs.getInt("reviewID"));
-					reply.setUserId(rs.getInt("studentID"));
-					reply.setReplyContent(rs.getString("reply"));
-					reply.setPostTime(rs.getTimestamp("postTime"));
-					review.addReply(reply);
-				}
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 
 
 }

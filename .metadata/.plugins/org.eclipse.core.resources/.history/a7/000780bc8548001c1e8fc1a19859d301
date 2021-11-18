@@ -26,7 +26,6 @@ public class ReviewDao {
 		while (iterator.hasNext()){
 			Review review = (Review) iterator.next();
 			sortAllReplies1(review);
-			review.printContents();
 		}
 		
 	}

@@ -60,10 +60,5 @@ public class Reply {
 	public void setPostTime(Timestamp newPostTime){
 		postTime = newPostTime;
 	}
-	
-	public void printContents(){
-		System.out.println("ReplyID: "+replyId+ "\nReviewID: "+reviewId+"\nUserID: "+
-				userId+"\nReplyContent: "+replyContent+"\npostTime: "+postTime);
-	}
 
 }

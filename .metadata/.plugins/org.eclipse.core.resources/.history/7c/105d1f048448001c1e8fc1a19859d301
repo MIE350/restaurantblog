@@ -1,7 +1,6 @@
 package com.mie.model;
 
 import java.sql.Timestamp;
-import java.util.Iterator;
 
 public class Review {
 
@@ -92,11 +91,7 @@ public class Review {
 		System.out.println("ReviewID: "+this.reviewId+"\nRestaurantID: "+this.restaurantId
 				+"\nUserID: "+this.userId+"\nReviewContent: "+(String) this.reviewContent+
 				"\nRating: "+this.rating+"\npostTime: "+this.postTime);
-		Iterator iterator = replies.iterator(); 
-		while (iterator.hasNext()){
-			Reply reply = (Reply) iterator.next();
-			reply.printContents();
-		}
+		Iterator iterator = replies; 
 	}
 
 }

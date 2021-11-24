@@ -1,18 +1,18 @@
 package com.mie.model;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Restaurant {
 	
     private String address;
     private String cuisine;
-    private String hoursOperation; // Date or string representing hours of operation?
+    private String hoursOperation;
     private int id;
     private String name;
-    private ArrayList<String> photos;
+    private String picture;
     private String price; 
 	private double rating;
-    private ReviewsList reviewsList; // Need to create class for ReviewsList objects
+    private ReviewsList reviewsList = new ReviewsList();
      
     // Getters
     public String getAddress(){
@@ -39,8 +39,8 @@ public class Restaurant {
         return this.price;
     }
     
-    public ArrayList<String> getPhotos(){
-    	return this.photos;
+    public String getPicture(){
+    	return this.picture;
     }
 
     public double getRating(){
@@ -68,8 +68,8 @@ public class Restaurant {
         this.address = address;
     }
     
-    public void setPhotos(ArrayList<String> photos){
-    	this.photos = photos;
+    public void setPicture(String picture){
+    	this.picture = picture;
     }
 
     public void setPrice(String price){
@@ -89,15 +89,31 @@ public class Restaurant {
     }
 
     // Methods
-	public void readData(String address, String cuisine, String hoursOperation, int id, String name, ArrayList<String> photos, String price, double rating, ReviewsList reviewsList) {
+	public void readData(String address, String cuisine, String hoursOperation, int id, String name, String pictures, String price, double rating, ReviewsList reviewsList) {
 			this.address = name;
 			this.cuisine = cuisine;
             this.hoursOperation = hoursOperation;
             this.id = id;
             this.name = name;
-            this.photos = photos;
+            this.picture = picture;
             this.price = price;
             this.rating = rating;
             this.reviewsList = reviewsList;
+	}
+	
+	public void printContents(){
+		System.out.println("Address: "+this.address+"\nCuisine: "+this.cuisine
+				+"\nHours of Operation: "+this.hoursOperation+"\nRestaurant ID: "+this.id+
+				"\nRestaurant Name: "+this.name+"\nPrice: "+this.price+"\nRating: "+this.rating);
+		Iterator iterator = reviewsList.iterator(); 
+		while (iterator.hasNext()){
+			Review review = (Review) iterator.next();
+			review.printContents();
+		}
+	}
+	
+	//add new reply to review
+	public void addReview(Review review) {
+		reviewsList.add(review);
 	}
 }

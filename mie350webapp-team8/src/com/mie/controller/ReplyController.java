@@ -14,8 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mie.dao.ReviewDao;
 import com.mie.model.Review;
+import com.mie.dao.ReplyDao;
+import com.mie.model.Reply;
 
-public class ReviewController extends HttpServlet {
+
+public class ReplyController extends HttpServlet {
 	/**
 	 * This class handles all insert/edit/list functions of the servlet.
 	 * 
@@ -27,19 +30,19 @@ public class ReviewController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L; //what is thiss
-	private static String INSERT = "/addReview.jsp"; //NEED TO MAKE CREATE NEW JSP
+	private static String INSERT = "/addReply.jsp"; //NEED TO MAKE CREATE NEW JSP
 	//private static String EDIT = "/editReview.jsp";
-	private static String LIST_REVIEW = "/listReview.jsp"; //NEED TO CREATE NEW JSP (listReview)
+	private static String LIST_REPLY = "/listReview.jsp"; //NEED TO CREATE NEW JSP (listReview)
 	//private static String LIST_STUDENT_ADMIN = "/listStudentAdmin.jsp";
 
-	private ReviewDao dao;
+	private ReplyDao dao;
 
 	/**
 	 * Constructor for this class.
 	 */
-	public ReviewController() {
+	public ReplyController() {
 		super();
-		dao = new ReviewDao();
+		dao = new ReplyDao();
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -62,26 +65,12 @@ public class ReviewController extends HttpServlet {
 		if (action.equalsIgnoreCase("insert")) {
 			forward = INSERT; //new review to restaurant page
 		} 
-		/**else if (action.equalsIgnoreCase("edit")) {
-			forward = EDIT;
-			int studentId = Integer.parseInt(request.getParameter("studentId"));
-			Student student = dao.getStudentById(studentId);
-			request.setAttribute("student", student);
-		} 
 		
-		*/
-		
-		else if (action.equalsIgnoreCase("listReview")) {
-			forward = LIST_REVIEW;
-			request.setAttribute("reviews", dao.getRestaurantReviews(1));//how to get restaurant id as a param??
+		else if (action.equalsIgnoreCase("listReply")) {
+			forward = LIST_REPLY;
+			request.setAttribute("replies", dao.getReviewReplies(1));//how to get review id as param
 		}
-			
-		/**
-		} else if (action.equalsIgnoreCase("listStudentAdmin")) {
-			forward = LIST_STUDENT_ADMIN;
-			request.setAttribute("students", dao.getAllStudents());
-		} 
-		*/
+
 		else {
 			forward = INSERT;
 		}
@@ -99,16 +88,15 @@ public class ReviewController extends HttpServlet {
 		 * the addStudent.jsp or the editStudent.jsp pages.
 		 */
 		
-		Review review = new Review();
-		review.setReviewContent(request.getParameter("content"));
-		review.setRating(Integer.parseInt(request.getParameter("rating")));
-		review.setUserId(Integer.parseInt(request.getParameter("userId"))); //how would we get this from the jsp? @gabriel
-		review.setRestaurantId(Integer.parseInt(request.getParameter("restaurantId")));
+		Reply reply = new Reply();
+		reply.setReplyContent(request.getParameter("content"));
+		reply.setUserId(Integer.parseInt(request.getParameter("userId"))); //how would we get this from the jsp? @gabriel
+		reply.setReviewId(Integer.parseInt(request.getParameter("reviewId")));
 		
-		//String reviewid = request.getParameter("reviewId"); //same as for user id @gabriel
+		String replyid = request.getParameter("replyId"); //same as for user id @gabriel
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		review.setPostTime(timestamp);
-		dao.addReview(review);
+		reply.setPostTime(timestamp);
+		dao.addReply(reply);
 		
 		/**
 		 * Once the student has been added or updated, the page will redirect to
@@ -117,8 +105,9 @@ public class ReviewController extends HttpServlet {
 		 * ^^ where would we redirect to (restaurant page?)
 		 */
 		RequestDispatcher view = request
-				.getRequestDispatcher(LIST_REVIEW);
-		request.setAttribute("reviews", dao.getRestaurantReviews(Integer.parseInt(request.getParameter("restaurantId"))));
+				.getRequestDispatcher(LIST_REPLY);
+		request.setAttribute("reviews", dao.getReviewReplies(Integer.parseInt(request.getParameter("reviewId"))));
 		view.forward(request, response);
 	}
+
 }

@@ -34,6 +34,30 @@ public class ReplyDao {
 		}
 	}
 	
+	public ReplyList getReviewReplies(int reviewId) {
+		ReplyList replies = new ReplyList();
+		try {
+			Statement statement = connection.createStatement();
+			// System.out.println("getting reviews from table");
+			ResultSet rs = statement.executeQuery("select * from replies where reviewID=" 
+					+ reviewId + " order by postTime asc;");
+			while (rs.next()) {
+				//set parameters for review object
+				Reply reply = new Reply();
+				reply.setReplyId(rs.getInt("replyID"));
+				reply.setReviewId(rs.getInt("reviewID"));
+				reply.setUserId(rs.getInt("studentID"));
+				reply.setReplyContent(rs.getString("reply"));
+				reply.setPostTime(rs.getTimestamp("postTime"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return replies;
+	}
+	
 	
 	
 }

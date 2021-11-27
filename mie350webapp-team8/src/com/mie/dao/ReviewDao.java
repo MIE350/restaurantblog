@@ -91,7 +91,8 @@ public class ReviewDao {
 		try {
 			Statement statement = connection.createStatement();
 			// System.out.println("getting reviews from table");
-			ResultSet rs = statement.executeQuery("select * from reviews where restaurantID=" + restaurantId);
+			ResultSet rs = statement.executeQuery("select * from reviews where restaurantID=" 
+					+ restaurantId + " order by postTime desc;");
 			while (rs.next()) {
 				//set parameters for review object
 				Review review = new Review();
@@ -103,9 +104,9 @@ public class ReviewDao {
 				review.setPostTime(rs.getTimestamp("postTime"));
 				
 				//find and sort replies
-				sortReplies(review);
+				//sortReplies(review);
 				
-				reviews.add(review);
+				//reviews.add(review);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

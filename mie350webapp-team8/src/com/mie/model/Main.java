@@ -1,0 +1,77 @@
+package com.mie.model;
+
+import java.sql.Date;
+
+public class Main {
+	
+	private static StudentList students = new StudentList();
+		
+	// Default file locations
+
+	final static String STUDENTLIST_NAME = "StudentList";
+	
+	private static String studentListLoc;
+	
+	
+	public static void main1(String[] args, boolean webApp, String realPath) {
+		
+		readInStudents();
+		
+		
+		
+		
+		public static void readInStudents() {
+			String qStr = "Select * from Student";
+			ResultSet dataInput = runSelect(qStr);
+
+			try {
+				while (dataInput.next()) {
+					int stid = dataInput.getInt("studentID");
+					String stlastname = dataInput.getString("lastname");
+					String stfirstname = dataInput.getString("firstname");
+					String stemail = dataInput.getString("lastname");
+					Date stdob = dataInput.getDate("dob");
+					String stuser = dataInput.getString("username");
+					String stpass = dataInput.getString("password");
+					 
+					Student student = new Student();
+					student.readData(stid, stlastname, stfirstname, stemail, stdob, stuser, stpass);
+					addStudent(student);
+					 }
+			} catch (SQLException se) {
+				SQLExceptionHandler.handleException(se);
+			}
+
+			logFile.write("Student list successfully inputted from database");
+		}
+
+					
+				}
+		
+	public static boolean runUpdate(String qStr) {
+		String queryString = qStr;
+		boolean result = false;
+		Statement statement;
+		PreparedStatement preparedStatement;
+		if (dbCon == null) {
+			return result;
+		}
+		try {
+			statement = dbCon.createStatement();
+			preparedStatement = dbCon.prepareStatement(queryString);
+			preparedStatement.execute();
+			result = true;
+			statement.close();
+			logFile.write("Execution of this query succeeded: " + queryString);
+		} catch (SQLException se) {
+			logFile.write("Execution of this query failed: " + queryString);
+			SQLExceptionHandler.handleException(se);
+		}
+		// reza remove it
+		// System.out.println(result);
+		return result;
+	}
+		
+	}
+
+}

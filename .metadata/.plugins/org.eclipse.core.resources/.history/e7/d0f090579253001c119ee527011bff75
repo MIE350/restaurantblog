@@ -1,0 +1,20 @@
+package com.mie.dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.*;
+
+import com.mie.model.Restaurant;
+import com.mie.model.Review;
+import com.mie.model.Student;
+import com.mie.util.DbUtil;
+import com.mie.model.RestaurantList;
+import com.mie.model.ReviewsList;
+
+import java.sql.Array;
+public class Shortlist extends RestaurantList{
+
+}

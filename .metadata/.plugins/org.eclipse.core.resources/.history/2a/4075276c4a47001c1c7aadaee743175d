@@ -1,0 +1,43 @@
+package com.mie.model;
+
+public class Main {
+	
+	private static StudentList students = new StudentList();
+	
+	// Database Connection
+	public static Connection dbCon;
+	
+	// Default file locations
+	private static String DEFAULT_DIRECTORY = "./Data/";
+	final static String STUDENTLIST_NAME = "StudentList";
+	
+	private static String studentListLoc;
+	
+	
+	public static void main1(String[] args, boolean webApp, String realPath) {
+		
+		readInStudents();
+		writeOutStudents();
+		
+		
+		
+		public static void readInStudents() {
+			String qStr = "Select * from Student";
+			ResultSet dataInput = runSelect(qStr);
+
+			try {
+				while (dataInput.next()) {
+					int stid = dataInput.getInt("studentID");
+					String stlastname = dataInput.getString("lastname");
+					String stfirstname = dataInput.getString("firstname");
+					String stemail = dataInput.getString("lastname");
+
+					String stuser = dataInput.getString("username");
+					
+				}
+		
+		
+		
+	}
+
+}

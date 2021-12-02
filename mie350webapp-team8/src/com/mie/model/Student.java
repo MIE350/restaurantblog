@@ -11,8 +11,11 @@ public class Student {
 	private int studentid;
 	private String firstName;
 	private String lastName;
-	private Date dob;
+	//private Date dob;
 	private String email;
+	private String username;
+	private String password;
+	private RestaurantList shortlist;
 
 	public int getStudentid() {
 		return studentid;
@@ -37,7 +40,7 @@ public class Student {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
+/*
 	public Date getDob() {
 		return dob;
 	}
@@ -45,7 +48,7 @@ public class Student {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-
+*/
 	public String getEmail() {
 		return email;
 	}
@@ -53,7 +56,46 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public void setUserName(String username) {
+		this.username = username;
+	}
+	
+	public String getUserName() {
+		return username;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public RestaurantList getShortlist() {
+		return shortlist;
+	}
+	
+	public void setShortlist(RestaurantList shortlist) {
+		shortlist.createShortlist(this.studentid);
+	}
+	
+	//todo: add to shortlist method (see reveiw class on maia branch)
 
+	public void readData(int studid, String lname, String fname, String email, 
+			String username, String password){
+		
+		this.studentid = studid;
+		this.lastName = lname;
+		this.firstName = fname;
+		this.email = email;
+		//this.dob = dbirth;
+		this.username = username;
+		this.password = password;
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Student [studentid=" + studentid + ", firstName=" + firstName

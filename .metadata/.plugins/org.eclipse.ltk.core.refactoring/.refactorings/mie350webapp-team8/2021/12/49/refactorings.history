@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;Shortlist.java&apos; to &apos;mie350webapp-team8/src/com.mie.dao&apos;&#x0D;&#x0A;- Original project: &apos;mie350webapp-team8&apos;&#x0D;&#x0A;- Destination element: &apos;mie350webapp-team8/src/com.mie.dao&apos;&#x0D;&#x0A;- Original element: &apos;com.mie.model.Shortlist.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;com.mie.dao" element1="/src&lt;com.mie.model{Shortlist.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1638464854500" units="1" version="1.0"/>
+</session>

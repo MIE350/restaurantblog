@@ -1,0 +1,50 @@
+package com.mie.model;
+import java.util.*;
+import 
+
+public class StudentList {
+
+	protected Map map = new HashMap();
+	
+	public void add(Student new_student){
+		map.put(new Integer(new_student.getStudentid()), new_student);}
+	
+	public boolean has(int student_id){
+		return map.containsKey(new Integer(student_id));}
+	
+	public boolean has(Student student){
+		return map.containsKey(new Integer(student.getStudentid()));}
+	
+	public int size(){
+		return map.size();}
+	
+	public Iterator iterator() {
+		return map.values().iterator();}
+	
+	public Student get(int student_id) throws NotFoundException {
+		if (!has(student_id)) {
+			throw new NotFoundException("Cannot find student " + student_id);
+		}
+		return (Student) map.get(new Integer(student_id));
+	}
+	
+	public boolean insert(Student student) {
+
+		int stid = student.getStudentid();
+		String lname = student.getLastName();
+		String fname = student.getFirstName();
+		String stemail = student.getEmail();
+		Date dob = student.getDob();
+		String username = student.getUserName();
+		String password = student.getPassword();
+
+		String qStr = "INSERT INTO Student Values ('" + stid + "', '" + lname + "', '"+ fname + "', '"  + stemail + "', '" +
+				dob + "', '" + username + "', '" + password
+				+ "')";
+		boolean updateResult = Main.runUpdate(qStr);
+		return updateResult;
+	}
+	
+	
+	
+}

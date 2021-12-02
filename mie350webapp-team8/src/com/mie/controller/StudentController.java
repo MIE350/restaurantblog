@@ -26,10 +26,9 @@ public class StudentController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static String INSERT = "/addStudent.jsp";
+	private static String INSERT = "/addStudent.jsp"; 
 	private static String EDIT = "/editStudent.jsp";
-	private static String LIST_STUDENT_PUBLIC = "/listStudentPublic.jsp";
-	private static String LIST_STUDENT_ADMIN = "/listStudentAdmin.jsp";
+	private static String LIST_STUDENT = "/listStudentPublic.jsp";
 
 	private StudentDao dao;
 
@@ -61,7 +60,7 @@ public class StudentController extends HttpServlet {
 		if (action.equalsIgnoreCase("delete")) {
 			int studentId = Integer.parseInt(request.getParameter("studentId"));
 			dao.deleteStudent(studentId);
-			forward = LIST_STUDENT_ADMIN;
+			forward = LIST_STUDENT;
 			request.setAttribute("students", dao.getAllStudents());
 		} else if (action.equalsIgnoreCase("insert")) {
 			forward = INSERT;
@@ -71,10 +70,7 @@ public class StudentController extends HttpServlet {
 			Student student = dao.getStudentById(studentId);
 			request.setAttribute("student", student);
 		} else if (action.equalsIgnoreCase("listStudent")) {
-			forward = LIST_STUDENT_PUBLIC;
-			request.setAttribute("students", dao.getAllStudents());
-		} else if (action.equalsIgnoreCase("listStudentAdmin")) {
-			forward = LIST_STUDENT_ADMIN;
+			forward = LIST_STUDENT;
 			request.setAttribute("students", dao.getAllStudents());
 		} else {
 			forward = INSERT;
@@ -91,9 +87,11 @@ public class StudentController extends HttpServlet {
 		 * This method retrieves all of the information entered in the form on
 		 * the addStudent.jsp or the editStudent.jsp pages.
 		 */
+		
 		Student student = new Student();
 		student.setFirstName(request.getParameter("firstName"));
 		student.setLastName(request.getParameter("lastName"));
+		student.setPassword(request.getParameter("password"));
 		try {
 			Date dob = new SimpleDateFormat("MM/dd/yyyy").parse(request
 					.getParameter("dob"));
@@ -123,7 +121,7 @@ public class StudentController extends HttpServlet {
 		 * the listing of students.
 		 */
 		RequestDispatcher view = request
-				.getRequestDispatcher(LIST_STUDENT_ADMIN);
+				.getRequestDispatcher(LIST_STUDENT);
 		request.setAttribute("students", dao.getAllStudents());
 		view.forward(request, response);
 	}

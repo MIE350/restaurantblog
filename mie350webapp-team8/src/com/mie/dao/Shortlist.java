@@ -1,0 +1,86 @@
+package com.mie.dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.*;
+
+import com.mie.model.Restaurant;
+import com.mie.model.Review;
+import com.mie.model.Student;
+import com.mie.util.DbUtil;
+import com.mie.model.RestaurantList;
+import com.mie.model.ReviewsList;
+
+import java.sql.Array;
+
+public class ShortlistDao  {
+	
+private Connection connection;
+	
+	public void main(){
+		
+		//full list of restaurants to have info to work with
+		RestaurantList restaurants = (RestaurantList) getAllRestaurants();
+		Iterator iterator = restaurants.iterator();
+		while (iterator.hasNext()){
+			Restaurant restaurant = (Restaurant) iterator.next();
+			addReviews(restaurant);
+		}
+		
+	}
+
+	public ShortlistDao() {
+		connection = DbUtil.getConnection();
+	}
+	
+	public void addFavourite(Student student, Restaurant restaurant) {
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement(
+					"insert into shortlist(studentID, restaurantID) values (?,?)");
+			ps.setInt(1, student.getStudentid());
+			ps.setInteger(2, restaurant.getId());
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteFavourite(Student student, Restaurant restaurant) {
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement("delete from shortlist where studentID = ? AND restaurantID = ?");
+			ps.setInt(1, student.getStudentid());
+			ps.setInteger(2, restaurant.getId());
+			ps.executeUpdate();
+	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public RestaurantList createShortlist(Student student) {
+		
+		RestaurantList restaurants = (RestaurantList) getAllRestaurants();
+		RestaurantList shortlist = new RestaurantList();
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select restaurantID from shortlist where studentID = ?");
+			statement.setInteger(1, student.getStudentid());
+			//rs will give use the restaurant id
+			while (rs.next()) {
+				//restaurantID is a STRING (to fix)
+				shortlist.add(restaurants.get(rs.getInt("restaurantID")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return shortlist;
+	}
+
+}

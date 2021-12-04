@@ -40,7 +40,7 @@ public class RestaurantDao {
 		
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("insert into restaurants(address,cuisine,hours,id,name,picture,price,rating) values (?,?,?,?,?,?,?,?)");
+					.prepareStatement("insert into restaurants(address,cuisine,hours,id,name,picture,price,rating, website) values (?,?,?,?,?,?,?,?,?)");
 			
 			ps.setString(1, restaurant.getAddress());
 			ps.setString(2, restaurant.getCuisine());
@@ -50,6 +50,7 @@ public class RestaurantDao {
 			ps.setString(6, restaurant.getPicture());
 			ps.setString(7, restaurant.getPrice());
 			ps.setDouble(8, restaurant.getRating());
+			ps.setString(9, restaurant.getWebsite());
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -73,6 +74,7 @@ public class RestaurantDao {
 				restaurant.setPicture(rs.getString("picture"));
 				restaurant.setPrice(rs.getString("price"));
 				restaurant.setRating(rs.getDouble("rating"));
+				restaurant.setWebsite(rs.getString("website"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,9 +118,18 @@ public class RestaurantDao {
 		}
 	}
 	
-	public ArrayList<Restaurant> sortByPriceAscending(){
+	public ArrayList<Restaurant> sortByPriceAscending(ArrayList<Restaurant> filteredRestaurants){
 		
-		RestaurantList restaurants = getAllRestaurants();
+		RestaurantList restaurants = new RestaurantList();
+		
+		if (filteredRestaurants.isEmpty()){
+			restaurants = getAllRestaurants();
+		}
+		else{
+			for (Restaurant restaurant : filteredRestaurants){
+				restaurants.add(restaurant);
+			}
+		}
 		ArrayList<Restaurant> restaurantsByPrice = new ArrayList<Restaurant>();
 		
 		Iterator iterator = restaurants.iterator();
@@ -139,9 +150,19 @@ public class RestaurantDao {
 		return restaurantsByPrice;
 	}
 	
-	public ArrayList<Restaurant> sortByPriceDescending(){
+	public ArrayList<Restaurant> sortByPriceDescending(ArrayList<Restaurant> filteredRestaurants){
 		
-		RestaurantList restaurants = getAllRestaurants();
+		RestaurantList restaurants = new RestaurantList();
+		
+		if (filteredRestaurants.isEmpty()){
+			restaurants = getAllRestaurants();
+		}
+		else{
+			for (Restaurant restaurant : filteredRestaurants){
+				restaurants.add(restaurant);
+			}
+		}
+		
 		ArrayList<Restaurant> restaurantsByPrice = new ArrayList<Restaurant>();
 		
 		Iterator iterator = restaurants.iterator();
@@ -162,9 +183,19 @@ public class RestaurantDao {
 		return restaurantsByPrice;
 	}
 	
-	public ArrayList<Restaurant> sortByRatingAscending(){
+	public ArrayList<Restaurant> sortByRatingAscending(ArrayList<Restaurant> filteredRestaurants){
 		
-		RestaurantList restaurants = getAllRestaurants();
+		RestaurantList restaurants = new RestaurantList();
+		
+		if (filteredRestaurants.isEmpty()){
+			restaurants = getAllRestaurants();
+		}
+		else{
+			for (Restaurant restaurant : filteredRestaurants){
+				restaurants.add(restaurant);
+			}
+		}
+		
 		ArrayList<Restaurant> restaurantsByRating = new ArrayList<Restaurant>();
 		
 		Iterator iterator = restaurants.iterator();
@@ -186,9 +217,19 @@ public class RestaurantDao {
 		
 	}
 	
-	public ArrayList<Restaurant> sortByRatingDescending(){
+	public ArrayList<Restaurant> sortByRatingDescending(ArrayList<Restaurant> filteredRestaurants){
 		
-		RestaurantList restaurants = getAllRestaurants();
+		RestaurantList restaurants = new RestaurantList();
+		
+		if (filteredRestaurants.isEmpty()){
+			restaurants = getAllRestaurants();
+		}
+		else{
+			for (Restaurant restaurant : filteredRestaurants){
+				restaurants.add(restaurant);
+			}
+		}
+		
 		ArrayList<Restaurant> restaurantsByRating = new ArrayList<Restaurant>();
 		
 		Iterator iterator = restaurants.iterator();
@@ -210,7 +251,7 @@ public class RestaurantDao {
 		
 	}
 	
-	public ArrayList<Restaurant> sortByCuisine(String sortCuisine){
+	public ArrayList<Restaurant> filterByCuisine(String filterCuisine){
 		
 		RestaurantList restaurants = getAllRestaurants();
 		ArrayList<Restaurant> restaurantsByCuisine = new ArrayList<Restaurant>();
@@ -220,12 +261,29 @@ public class RestaurantDao {
 		while (iterator.hasNext()){
 			Restaurant restaurant = (Restaurant) iterator.next();
 			
-			if (restaurant.getCuisine() == sortCuisine) {
+			if (restaurant.getCuisine() == filterCuisine) {
 				restaurantsByCuisine.add(restaurant);
 			}
 		}
 		
 		return restaurantsByCuisine;
+	}
+	
+	public ArrayList<Restaurant> filterByKeyword(String filterKeyword){
+		
+		RestaurantList restaurants = getAllRestaurants();
+		ArrayList<Restaurant> restaurantsByKeyword = new ArrayList<Restaurant>();
+		
+		Iterator iterator = restaurants.iterator();
+		
+		while (iterator.hasNext()){
+			Restaurant restaurant = (Restaurant) iterator.next();
+			
+			if (restaurant.getName().contains(filterKeyword)) {
+				restaurantsByKeyword.add(restaurant);
+			}
+		}
+		return restaurantsByKeyword;
 	}
 	
 	public void computeRating(Restaurant restaurant){

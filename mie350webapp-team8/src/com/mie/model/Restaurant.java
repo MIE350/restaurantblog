@@ -13,6 +13,7 @@ public class Restaurant {
     private String price; 
 	private double rating;
     private ReviewsList reviewsList = new ReviewsList();
+    private String website;
      
     // Getters
     public String getAddress(){
@@ -49,6 +50,10 @@ public class Restaurant {
 
     public ReviewsList getReviewsList(){
         return this.reviewsList;
+    }
+    
+    public String getWebsite(){
+    	return this.website;
     }
 
     // Setters
@@ -87,9 +92,13 @@ public class Restaurant {
     public void setHours(String hoursOperation){
         this.hoursOperation = hoursOperation;
     }
+    
+    public void setWebsite(String website){
+    	this.website = website;
+    }
 
     // Methods
-	public void readData(String address, String cuisine, String hoursOperation, int id, String name, String pictures, String price, double rating, ReviewsList reviewsList) {
+	public void readData(String address, String cuisine, String hoursOperation, int id, String name, String pictures, String price, double rating, ReviewsList reviewsList, String website) {
 			this.address = name;
 			this.cuisine = cuisine;
             this.hoursOperation = hoursOperation;
@@ -99,12 +108,13 @@ public class Restaurant {
             this.price = price;
             this.rating = rating;
             this.reviewsList = reviewsList;
+            this.website = website;
 	}
 	
 	public void printContents(){
 		System.out.println("Address: "+this.address+"\nCuisine: "+this.cuisine
 				+"\nHours of Operation: "+this.hoursOperation+"\nRestaurant ID: "+this.id+
-				"\nRestaurant Name: "+this.name+"\nPrice: "+this.price+"\nRating: "+this.rating);
+				"\nRestaurant Name: "+this.name+"\nPrice: "+this.price+"\nRating: "+this.rating+"\nWebsite: "+this.website);
 		Iterator iterator = reviewsList.iterator(); 
 		while (iterator.hasNext()){
 			Review review = (Review) iterator.next();

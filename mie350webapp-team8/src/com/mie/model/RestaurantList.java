@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class RestaurantList {
 	
-	private Map map = new HashMap();
+	private Map<Integer, Restaurant> map = new HashMap<Integer, Restaurant>();
 
 	public void add(Restaurant newRestaurant) {
 		map.put(newRestaurant.getId(), newRestaurant);

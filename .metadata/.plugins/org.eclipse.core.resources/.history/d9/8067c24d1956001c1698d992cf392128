@@ -16,7 +16,6 @@ public class Student {
 	private String username;
 	private String password;
 	private RestaurantList shortlist;
-	private String bio;
 
 	public int getStudentid() {
 		return studentid;
@@ -100,6 +99,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [studentid=" + studentid + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + "]";
+				+ ", lastName=" + lastName + ", dob=" + dob + ", email="
+				+ email + "]";
 	}
 }

@@ -100,6 +100,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [studentid=" + studentid + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + "]";
+				+ ", lastName=" + lastName + ", dob=" + dob + ", email="
+				+ email + "]";
 	}
 }

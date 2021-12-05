@@ -10,12 +10,6 @@ import java.util.List;
 import com.mie.model.Student;
 import com.mie.util.DbUtil;
 
-//TO DO LIST:
-// - Connect shortlist to student class
-	//create all thee shortlist methods - look at maia's branch for reviews
-	//add controller methods for shortlist
-
-
 public class StudentDao {
 	/**
 	 * This class handles all of the Student-related methods
@@ -73,16 +67,15 @@ public class StudentDao {
 		 */
 		try {
 			PreparedStatement preparedStatement = connection
-					.prepareStatement("update students set lastname=?, firstname=?, email=?, dob=?, password=?"
+					.prepareStatement("update students set firstname=?, lastname=?, dob=?, email=?"
 							+ " where studentid=?");
 			// Parameters start with 1
-			preparedStatement.setString(1, student.getLastName());
-			preparedStatement.setString(2, student.getFirstName());
-			preparedStatement.setString(3, student.getEmail());
-			preparedStatement.setDate(4, new java.sql.Date(student.getDob()
+			preparedStatement.setString(1, student.getFirstName());
+			preparedStatement.setString(2, student.getLastName());
+			preparedStatement.setDate(3, new java.sql.Date(student.getDob()
 					.getTime()));
-			preparedStatement.setString(5, student.getPassword());
-			preparedStatement.setInt(6, student.getStudentid());
+			preparedStatement.setString(4, student.getEmail());
+			preparedStatement.setInt(5, student.getStudentid());
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {

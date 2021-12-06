@@ -1,0 +1,84 @@
+package com.mie.model;
+
+import java.util.Date;
+
+public class Student {
+	/**
+	 * This class contains all of the relevant information, and getter/setter
+	 * methods for the Student object.
+	 */
+
+	private int studentid;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String username;
+	private String password;
+	private RestaurantList shortlist;
+	private String bio;
+
+	public int getStudentid() {
+		return studentid;
+	}
+
+	public void setStudentid(int studentid) {
+		this.studentid = studentid;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public void setUserName(String username) {
+		this.username = username;
+	}
+	
+	public String getUserName() {
+		return username;
+	}
+	
+	public void setPassword(String new_password) {
+		password = new_password;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setBio(String new_bio) {
+		bio = new_bio;
+	}
+	
+	public String getBio() {
+		return bio;
+	}
+	
+	public RestaurantList getShortlist() {
+		return shortlist;
+	}
+	
+	public void addToShortlist(Restaurant restaurant) {
+		shortlist.add(restaurant);
+	}
+	
+}

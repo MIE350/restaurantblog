@@ -8,11 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import com.mie.model.Student;
+import com.mie.model.Restaurant;
 import com.mie.util.DbUtil;
 
 //TO DO LIST:
 // - Connect shortlist to student class
-	//create all thee shortlist methods - look at maia's branch for reviews
+	//create all three shortlist methods - look at maia's branch for reviews
 	//add controller methods for shortlist
 
 
@@ -22,7 +23,9 @@ public class StudentDao {
 	 * (add/update/delete/get).
 	 */
 
-	private Connection connection;
+	private static Connection connection;
+	static Connection currentCon = null;
+	static ResultSet rs = null;
 
 	public StudentDao() {
 		/**
@@ -37,34 +40,73 @@ public class StudentDao {
 		 */
 		try {
 			PreparedStatement preparedStatement = connection
-					.prepareStatement("insert into students(firstname,lastname,dob,email) values (?, ?, ?, ? )");
+					.prepareStatement("insert into students(firstname,lastname,email,username,password,bio) values (?, ?, ?, ?, ?, ?)");
 			// Parameters start with 1
 			preparedStatement.setString(1, student.getFirstName());
 			preparedStatement.setString(2, student.getLastName());
-			preparedStatement.setDate(3, new java.sql.Date(student.getDob()
-					.getTime()));
-			preparedStatement.setString(4, student.getEmail());
+			preparedStatement.setString(3, student.getEmail());
+			preparedStatement.setString(4, student.getUserName());
+			preparedStatement.setString(5, student.getPassword());
+			preparedStatement.setString(6, student.getBio());
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Student login(Student student) {
 
-	public void deleteStudent(int studentid) {
-		/**
-		 * This method deletes a student from the database.
-		 */
+		Statement stmt = null;
+
+		String username = student.getUserName();
+		String password = student.getPassword();
+
+		String searchQuery = "select * from students where username='" + username + "' AND password='" + password + "'";
+
 		try {
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("delete from students where studentid=?");
-			// Parameters start with 1
-			preparedStatement.setInt(1, studentid);
-			preparedStatement.executeUpdate();
+			// connect to DB
+			currentCon = DbUtil.getConnection();
+			stmt = currentCon.createStatement();
+			rs = stmt.executeQuery(searchQuery);
+			boolean more = rs.next();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+			/**
+			 * If there are no results from the query, set the member to false.
+			 * The person attempting to log in will be redirected to the home
+			 * page when isValid is false.
+			 */
+			
+			if (!more) {
+				student.setValid(false);
+			}
+
+			/**
+			 * If the query results in an database entry that matches the
+			 * username and password, assign the appropriate information to
+			 * the Member object.
+			 */
+			else if (more) {				
+
+				student.setFirstName(rs.getString("firstname"));
+				student.setLastName(rs.getString("lastname"));
+				student.setBio(rs.getString("bio"));
+				student.setStudentid(rs.getInt("studentID"));
+				student.setEmail(rs.getString("email"));
+				populateShortlist(student);
+				student.setValid(true);
+			}
 		}
+
+		catch (Exception ex) {
+			System.out.println("Log In failed: An Exception has occurred! "
+					+ ex);
+		}
+		/**
+		 * Return the Member object.
+		 */
+		return student;
+
 	}
 
 	public void updateStudent(Student student) {
@@ -73,21 +115,47 @@ public class StudentDao {
 		 */
 		try {
 			PreparedStatement preparedStatement = connection
-					.prepareStatement("update students set lastname=?, firstname=?, email=?, dob=?, password=?"
-							+ " where studentid=?");
+					.prepareStatement("update students set lastname=?, firstname=?, email=?, password=?, username=?, bio=? where studentid=?");
 			// Parameters start with 1
 			preparedStatement.setString(1, student.getLastName());
 			preparedStatement.setString(2, student.getFirstName());
 			preparedStatement.setString(3, student.getEmail());
-			preparedStatement.setDate(4, new java.sql.Date(student.getDob()
-					.getTime()));
-			preparedStatement.setString(5, student.getPassword());
-			preparedStatement.setInt(6, student.getStudentid());
+			preparedStatement.setString(4, student.getPassword());
+			preparedStatement.setString(5, student.getUserName());
+			preparedStatement.setString(6, student.getBio());
+			preparedStatement.setInt(7, student.getStudentid());
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void populateShortlist (Student student) {
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement("SELECT * from shortlist left join restaurants on shortlist.restaurantID=restaurants.restaurantID where studentID=?;");
+			preparedStatement.setInt(1, student.getStudentid());
+			ResultSet rs = preparedStatement.executeQuery();
+
+			if (rs.next()) {
+				Restaurant restaurant = new Restaurant();
+				restaurant.setId(rs.getInt("shortlist.restaurantID"));
+				restaurant.setAddress(rs.getString("address"));
+				restaurant.setCuisine(rs.getString("cuisine"));
+				restaurant.setHours(rs.getString("hoursOperation"));
+				restaurant.setName(rs.getString("name"));
+				restaurant.setPicture(rs.getString("picture"));
+				restaurant.setPrice(rs.getString("price"));
+				restaurant.setRating(rs.getDouble("avgRating"));
+				restaurant.setWebsite(rs.getString("website"));
+				student.addToShortlist(restaurant);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public List<Student> getAllStudents() {

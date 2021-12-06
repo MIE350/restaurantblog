@@ -11,7 +11,7 @@ import com.mie.model.*;
 import com.mie.dao.*;
 
 /**
- * Servlet implementation for LoginController.
+ * Servlet implementation for LoginController. 
  * 
  * This class handles the login servlet and assigns session attributes for users
  * who succesfully log into the system.
@@ -24,31 +24,36 @@ public class LoginController extends HttpServlet {
 		/**
 		 * Retrieve the entered username and password from the login.jsp form.
 		 */
-		Member member = new Member();
-		member.setUsername(request.getParameter("un"));
-		member.setPassword(request.getParameter("pw"));
+		Student student = new Student();
+		student.setUserName(request.getParameter("un"));
+		student.setPassword(request.getParameter("pw"));
 
 		try {
 			/**
 			 * Try to see if the member can log in.
 			 */
-			member = MemberDao.login(member);
+			student = StudentDao.login(student);
 
 			/**
 			 * If the isValid value is true, assign session attributes to the
 			 * current member.
 			 */
-			if (member.isValid()) {
+			if (student.isValid()) {
 
 				HttpSession session = request.getSession(true);
-				session.setAttribute("currentSessionmember", member);
-				session.setAttribute("username", member.getUsername());
-				session.setAttribute("firstname", member.getFirstName());
-				session.setAttribute("lastname", member.getLastName());
+				session.setAttribute("currentSessionmember", student);
+				session.setAttribute("username", student.getUserName());
+				session.setAttribute("firstname", student.getFirstName());
+				session.setAttribute("lastname", student.getLastName());
+				session.setAttribute("email", student.getEmail());
+				session.setAttribute("shortlist", student.getShortlist());
+				session.setAttribute("bio", student.getBio());
+				session.setAttribute("password", student.getPassword());
+				session.setAttribute("studentId", student.getStudentid());
 				/**
 				 * Redirect to the members-only home page.
 				 */
-				response.sendRedirect("memberLogged.jsp");
+				response.sendRedirect("about.jsp");
 
 				/**
 				 * Set a timeout variable of 900 seconds (15 minutes) for this

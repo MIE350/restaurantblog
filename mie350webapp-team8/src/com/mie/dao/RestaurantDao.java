@@ -27,6 +27,7 @@ public class RestaurantDao {
 		while (iterator.hasNext()){
 			Restaurant restaurant = (Restaurant) iterator.next();
 			addReviews(restaurant);
+			computeRating(restaurant);
 			restaurant.printContents();
 		}
 		
@@ -40,17 +41,17 @@ public class RestaurantDao {
 		
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("insert into restaurants(address,cuisine,hours,id,name,picture,price,rating, website) values (?,?,?,?,?,?,?,?,?)");
+					.prepareStatement("insert into restaurants(restaurantID, name, address, cuisine, hours, price, picture, website) values (?,?,?,?,?,?,?,?)");
 			
-			ps.setString(1, restaurant.getAddress());
-			ps.setString(2, restaurant.getCuisine());
-			ps.setString(3, restaurant.getHours());
-			ps.setInt(4, restaurant.getId());
-			ps.setString(5, restaurant.getName());
-			ps.setString(6, restaurant.getPicture());
-			ps.setString(7, restaurant.getPrice());
-			ps.setDouble(8, restaurant.getRating());
-			ps.setString(9, restaurant.getWebsite());
+			ps.setInt(1, restaurant.getId());
+			ps.setString(2, restaurant.getName());
+			ps.setString(3, restaurant.getAddress());
+			ps.setString(4, restaurant.getCuisine());
+			ps.setString(5, restaurant.getHours());
+			ps.setString(6, restaurant.getPrice());
+			ps.setString(7, restaurant.getPicture());
+			ps.setString(8, restaurant.getWebsite());
+			
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -65,15 +66,15 @@ public class RestaurantDao {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("select * from restaurants");
 			while (rs.next()) {
+				
 				Restaurant restaurant = new Restaurant();
+				restaurant.setId(rs.getInt("restaurantID"));
+				restaurant.setName(rs.getString("name"));
 				restaurant.setAddress(rs.getString("address"));
 				restaurant.setCuisine(rs.getString("cuisine"));
 				restaurant.setHours(rs.getString("hours"));
-				restaurant.setId(rs.getInt("id"));
-				restaurant.setName(rs.getString("name"));
-				restaurant.setPicture(rs.getString("picture"));
 				restaurant.setPrice(rs.getString("price"));
-				restaurant.setRating(rs.getDouble("rating"));
+				restaurant.setPicture(rs.getString("picture"));
 				restaurant.setWebsite(rs.getString("website"));
 			}
 		} catch (SQLException e) {
@@ -93,11 +94,11 @@ public class RestaurantDao {
 			ResultSet rs = statement.executeQuery("select * from reviews where restaurantID ="+restaurantId);
 			while (rs.next()){
 				Review review = new Review();
-				review.setReviewContent(rs.getString("review"));
-				review.setRating(rs.getInt("reviewID"));
-				review.setUserId(rs.getInt("studentID"));
-				review.setRestaurantId(rs.getInt("restaurantID"));
 				review.setReviewId(rs.getInt("reviewID"));
+				review.setUserId(rs.getInt("studentID"));
+				review.setReviewContent(rs.getString("review"));
+				review.setRestaurantId(rs.getInt("restaurantID"));
+				review.setRating(rs.getInt("rating"));
 				review.setPostTime(rs.getTimestamp("postTime"));
 				restaurant.addReview(review);
 			}
@@ -115,6 +116,33 @@ public class RestaurantDao {
 		while (iterator.hasNext()){
 			Restaurant restaurant = (Restaurant) iterator.next();
 			addReviews(restaurant);
+		}
+	}
+	
+	public void computeRating(Restaurant restaurant){
+		
+		int restaurantId = restaurant.getId();
+		
+		try {
+			Statement statement = connection.createStatement();
+			
+			ResultSet rs = statement.executeQuery("select avg(rating) from reviews where restaurantID ="+restaurantId);
+			restaurant.setRating(rs.getDouble("avg(rating"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void computeAllRatings(){
+		
+		RestaurantList restaurants = getAllRestaurants();
+		
+		Iterator iterator = restaurants.iterator();
+		
+		while (iterator.hasNext()){
+			Restaurant restaurant = (Restaurant) iterator.next();
+			computeRating(restaurant);
 		}
 	}
 	
@@ -284,20 +312,5 @@ public class RestaurantDao {
 			}
 		}
 		return restaurantsByKeyword;
-	}
-	
-	public void computeRating(Restaurant restaurant){
-		
-		int restaurantId = restaurant.getId();
-		
-		try {
-			Statement statement = connection.createStatement();
-			
-			ResultSet rs = statement.executeQuery("select avg(rating) from reviews where restaurantID ="+restaurantId);
-			restaurant.setRating(rs.getDouble("avg(rating"));
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 }

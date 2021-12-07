@@ -98,7 +98,7 @@ public class Restaurant {
     }
 
     // Methods
-	public void readData(String address, String cuisine, String hoursOperation, int id, String name, String pictures, String price, double rating, ReviewsList reviewsList, String website) {
+	public void readData(String address, String cuisine, String hoursOperation, int id, String name, String picture, String price, double rating, ReviewsList reviewsList, String website) {
 			this.address = name;
 			this.cuisine = cuisine;
             this.hoursOperation = hoursOperation;
